@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:tortoise_assignment/core/theme/app_colors.dart';
 
 class AppTypography {
   static const String hafferXH = 'HafferXH';
@@ -8,5 +9,6 @@ class AppTypography {
     fontSize: 12,
     letterSpacing: 0.96,
     fontWeight: FontWeight.w600,
+    color: AppColors.subText,
   );
 }

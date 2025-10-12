@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inner_shadow_container/inner_shadow_container.dart';
 import 'package:tortoise_assignment/core/constants.dart';
+import 'package:tortoise_assignment/core/theme/text_style.dart';
 import '../../../core/models/product_config.dart';
 import '../../../core/theme/app_colors.dart';
 
@@ -39,14 +40,9 @@ class ConfigSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'FINISH',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.black10.withAlpha(64),
-            letterSpacing: 0.96,
-          ),
+          style: AppTypography.sectionHeader,
         ),
         const Text(
           'Pick a color',
@@ -111,14 +107,9 @@ class ConfigSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'STORAGE',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.black10.withAlpha(64),
-            letterSpacing: 0.96,
-          ),
+          style: AppTypography.sectionHeader,
         ),
         const Text(
           'How much space do you need?',
@@ -131,41 +122,55 @@ class ConfigSelector extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Wrap(
-          spacing: 12,
-          runSpacing: 12,
+          spacing: 8,
+          runSpacing: 8,
           children: config.storageOptions.map((storage) {
             final isSelected = selectedStorageId == storage.id;
             return GestureDetector(
               onTap: () => onStorageSelected(storage.id),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                padding: const EdgeInsets.all(16),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppColors.primary : AppColors.grey300,
+                    color: isSelected ? AppColors.green8 : Colors.black.withAlpha(10),
                     width: isSelected ? 2 : 1,
                   ),
-                  color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 0,
+                      spreadRadius: 0,
+                      color: Colors.black.withAlpha(10),
+                      offset: const Offset(0, 2),
+                    )
+                  ],
                 ),
                 child: Row(
+                  spacing: 12,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Container(
+                      height: 16,
+                      width: 16,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: isSelected ? 5 : 1,
+                            color: isSelected ? AppColors.green8 : AppColors.grey300,
+                          )),
+                    ),
                     Text(
                       storage.capacity,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    if (isSelected) ...[
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.check_circle,
-                        color: AppColors.primary,
-                        size: 16,
-                      ),
-                    ],
                   ],
                 ),
               ),

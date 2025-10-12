@@ -28,7 +28,7 @@ class AppColors {
   // static const Color grey800 = Color(0xFF1F1F1F);
   // static const Color grey900 = Color(0xFF141414);
 
-  static const Color subText = black10;
+  static const Color subText = Color(0x40191919); //  black 10 with 45% opacity
   static const Color contentLight = Color(0xFFAFAFAF);
 
   static const List<Color> borderGradient = [Colors.white, Color(0xFF42D499), Colors.white];

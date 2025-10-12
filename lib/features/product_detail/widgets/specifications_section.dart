@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tortoise_assignment/core/theme/text_style.dart';
 import '../../../core/models/specification.dart';
 import '../../../core/theme/app_colors.dart';
 
@@ -24,11 +25,7 @@ class SpecificationsSection extends StatelessWidget {
       children: [
         const Text(
           'SPECIFICATIONS',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTypography.sectionHeader,
         ),
         const SizedBox(height: 16),
         ...displaySpecs.map((spec) => _buildSpecificationItem(spec)).toList(),
