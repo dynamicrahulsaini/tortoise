@@ -15,7 +15,7 @@ class Product extends Equatable {
   final List<String> imageUrls;
   final DeliveryInfo deliveryInfo;
   final ProductConfig config;
-  final List<Specification> specifications;
+  final List<Specification>? specifications;
   final List<String> descriptionImageUrls;
   final ProductPricing pricing;
   final List<ProductTaxInfo> taxSlabInfo;
@@ -31,7 +31,7 @@ class Product extends Equatable {
     required this.imageUrls,
     required this.deliveryInfo,
     required this.config,
-    required this.specifications,
+    this.specifications,
     required this.descriptionImageUrls,
     required this.pricing,
     required this.taxSlabInfo,
@@ -88,7 +88,7 @@ class Product extends Equatable {
       'imageUrls': imageUrls,
       'deliveryInfo': deliveryInfo.toJson(),
       'config': config.toJson(),
-      'specifications': specifications.map((e) => e.toJson()).toList(),
+      'specifications': specifications?.map((e) => e.toJson()).toList(),
       'descriptionImageUrls': descriptionImageUrls,
       'pricing': pricing.toJson(),
       'taxSlabInfo': taxSlabInfo.map((e) => e.toJson()).toList(),

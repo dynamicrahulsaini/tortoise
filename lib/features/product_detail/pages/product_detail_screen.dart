@@ -174,13 +174,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     context.read<ProductDetailBloc>().add(SelectStorage(storageId));
                   },
                 ),
-                SpecificationsSection(
-                  specifications: product.specifications,
-                  isExpanded: state.isSpecificationsExpanded,
-                  onToggleExpanded: () {
-                    context.read<ProductDetailBloc>().add(const ToggleSpecificationsExpanded());
-                  },
-                ),
+                if (product.specifications != null)
+                  SpecificationsSection(
+                    specifications: product.specifications!,
+                    isExpanded: state.isSpecificationsExpanded,
+                    onToggleExpanded: () {
+                      context.read<ProductDetailBloc>().add(const ToggleSpecificationsExpanded());
+                    },
+                  ),
                 DescriptionImagesSection(
                   imageUrls: product.descriptionImageUrls,
                   isExpanded: state.isDescriptionImagesExpanded,

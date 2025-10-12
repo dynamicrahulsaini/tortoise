@@ -22,6 +22,8 @@ class NetIncomeBottomSheet extends StatefulWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      // isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
       builder: (context) => NetIncomeBottomSheet(product: product),
     );
   }
@@ -40,180 +42,205 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: SingleChildScrollView(
-        child: Column(
-          spacing: 30,
-          children: [
-            Text(
-              'EFFECTIVE PRICE',
-              style: AppTypography.leadingText.copyWith(color: AppColors.black5),
+      child: Column(
+        spacing: 16,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header section
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+            child: Column(
+              spacing: 16,
+              children: [
+                Text(
+                  'EFFECTIVE PRICE',
+                  style: AppTypography.leadingText.copyWith(color: AppColors.black5),
+                ),
+                const Text(
+                  'The effective price is the device\'s cost after savings, based on your payroll structure',
+                  style: AppTypography.p2Medium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const Text(
-              'The effective price is the device’s cost after savings, based on your payroll structure',
-              style: AppTypography.p2Medium,
-              textAlign: TextAlign.center,
-            ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.black1,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.black1, width: 1),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFEEEEEE).withOpacity(0.35),
-                    offset: const Offset(0, 6.54),
-                    blurRadius: 19.61,
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: const Color(0xFF42474C).withOpacity(0.06),
-                    offset: const Offset(0, 3.27),
-                    blurRadius: 6.54,
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: const Color(0xFF42474C).withOpacity(0.32),
-                    offset: const Offset(0, 0.82),
-                    blurRadius: 0.82,
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: Column(
-                spacing: 12,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Tax slab',
-                            style: AppTypography.p2Semibold,
-                          ),
-                          Text(
-                            'Monthly impact: ₹${_getSelectedTaxInfo()?.monthlyDeduction ?? widget.product.pricing.currentTaxSlab.impactOnMonthlySalary}',
-                            style: AppTypography.p4Medium.copyWith(
-                              color: AppColors.textPrimary.withAlpha(100),
-                            ),
-                          ),
-                        ],
-                      ),
-                      _buildTaxSlabDropdown(),
-                    ],
-                  ),
-                  divider(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Effective price of the device',
-                              style: AppTypography.p2Semibold.copyWith(color: AppColors.primary8),
-                            ),
-                            Text(
-                              'Price calculation based on selected tax slab',
-                              style: AppTypography.p4Medium.copyWith(color: AppColors.textPrimary.withAlpha(100)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        '₹ ${_getSelectedTaxInfo()?.effectivePrice.toStringAsFixed(0) ?? widget.product.pricing.effectivePrice.toStringAsFixed(0)}',
-                        style: AppTypography.p2Semibold.copyWith(color: AppColors.primary8),
-                      )
-                    ],
-                  ),
-                  divider(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      Expanded(
-                        child: Column(
+          ),
+          // Scrollable content
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.black1,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.black1, width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFEEEEEE).withOpacity(0.35),
+                      offset: const Offset(0, 6.54),
+                      blurRadius: 19.61,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: const Color(0xFF42474C).withOpacity(0.06),
+                      offset: const Offset(0, 3.27),
+                      blurRadius: 6.54,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: const Color(0xFF42474C).withOpacity(0.32),
+                      offset: const Offset(0, 0.82),
+                      blurRadius: 0.82,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Impact in monthly in-hand',
+                              'Tax slab',
                               style: AppTypography.p2Semibold,
                             ),
                             Text(
-                              'You monthly in-hand salary will be reduced by this amount',
-                              style: AppTypography.p4Medium.copyWith(color: AppColors.textPrimary.withAlpha(100)),
+                              'Monthly impact: ₹${_getSelectedTaxInfo()?.monthlyDeduction ?? widget.product.pricing.currentTaxSlab.impactOnMonthlySalary}',
+                              style: AppTypography.p4Medium.copyWith(
+                                color: AppColors.textPrimary.withAlpha(100),
+                              ),
+                            ),
+                          ],
+                        ),
+                        _buildTaxSlabDropdown(),
+                      ],
+                    ),
+                    divider(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 8,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Effective price of the device',
+                                style: AppTypography.p2Semibold.copyWith(color: AppColors.primary8),
+                              ),
+                              Text(
+                                'Price calculation based on selected tax slab',
+                                style: AppTypography.p4Medium.copyWith(color: AppColors.textPrimary.withAlpha(100)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '₹ ${_getSelectedTaxInfo()?.effectivePrice.toStringAsFixed(0) ?? widget.product.pricing.effectivePrice.toStringAsFixed(0)}',
+                          style: AppTypography.p2Semibold.copyWith(color: AppColors.primary8),
+                        )
+                      ],
+                    ),
+                    divider(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 8,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Impact in monthly in-hand',
+                                style: AppTypography.p2Semibold,
+                              ),
+                              Text(
+                                'You monthly in-hand salary will be reduced by this amount',
+                                style: AppTypography.p4Medium.copyWith(color: AppColors.textPrimary.withAlpha(100)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '₹ ${_getSelectedTaxInfo()?.monthlyDeduction.toStringAsFixed(0) ?? widget.product.pricing.monthlyDeduction.toStringAsFixed(0)}*',
+                          style: AppTypography.p2Semibold.copyWith(color: AppColors.black9),
+                        )
+                      ],
+                    ),
+                    // Animated extra information section
+                    ClipRect(
+                      child: AnimatedAlign(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        alignment: Alignment.topCenter,
+                        heightFactor: isExtraInfoExpanded ? 1.0 : 0.0,
+                        child: _buildExtraInfoSection(),
+                      ),
+                    ),
+
+                    // Toggle button
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExtraInfoExpanded = !isExtraInfoExpanded;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          spacing: 4,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 200),
+                              child: Text(
+                                isExtraInfoExpanded ? 'Show less' : 'Know more',
+                                key: ValueKey(isExtraInfoExpanded),
+                                style: AppTypography.p3Semibold.copyWith(color: AppColors.primary9),
+                              ),
+                            ),
+                            AnimatedRotation(
+                              duration: const Duration(milliseconds: 300),
+                              turns: isExtraInfoExpanded ? 0.5 : 0.0,
+                              child: const PhosphorIcon(
+                                PhosphorIconsFill.caretCircleDown,
+                                color: AppColors.primary9,
+                                size: 20,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Text(
-                        '₹ ${_getSelectedTaxInfo()?.monthlyDeduction.toStringAsFixed(0) ?? widget.product.pricing.monthlyDeduction.toStringAsFixed(0)}*',
-                        style: AppTypography.p2Semibold.copyWith(color: AppColors.black9),
-                      )
-                    ],
-                  ),
-                  // Animated extra information section
-                  ClipRect(
-                    child: AnimatedAlign(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      alignment: Alignment.topCenter,
-                      heightFactor: isExtraInfoExpanded ? 1.0 : 0.0,
-                      child: _buildExtraInfoSection(),
                     ),
-                  ),
-
-                  // Toggle button
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isExtraInfoExpanded = !isExtraInfoExpanded;
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            child: Text(
-                              isExtraInfoExpanded ? 'Show less' : 'Know more',
-                              key: ValueKey(isExtraInfoExpanded),
-                              style: AppTypography.p3Semibold.copyWith(color: AppColors.primary9),
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          AnimatedRotation(
-                            duration: const Duration(milliseconds: 300),
-                            turns: isExtraInfoExpanded ? 0.5 : 0.0,
-                            child: const PhosphorIcon(
-                              PhosphorIconsFill.caretCircleDown,
-                              color: AppColors.primary9,
-                              size: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            SizedBox(
+          ),
+          // Button section
+          Padding(
+            padding: EdgeInsets.only(
+              left: 30,
+              right: 30,
+              top: 16,
+              bottom: 20 + MediaQuery.of(context).padding.bottom,
+            ),
+            child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () => NavigationService.pop(),
@@ -235,8 +262,8 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -268,7 +295,6 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
       spacing: 16,
       children: [
         divider(),
-
         // Additional pricing breakdown
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,6 +433,7 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
   void _showTaxSlabOptions() {
     showModalBottomSheet(
       context: context,
+      showDragHandle: false,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         decoration: const BoxDecoration(
@@ -417,20 +444,10 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.grey300,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 16),
             const Text(
               'Select Tax Slab',
               style: AppTypography.h4,
             ),
-            const SizedBox(height: 16),
             ...widget.product.taxSlabInfo.map((taxInfo) {
               final slabText = '${taxInfo.taxSlab.percentage}%';
               return ListTile(
@@ -463,7 +480,7 @@ class _NetIncomeBottomSheetState extends State<NetIncomeBottomSheet> {
                 ),
                 trailing: selectedTaxSlab == slabText
                     ? const PhosphorIcon(
-                        PhosphorIconsFill.check,
+                        PhosphorIconsFill.checkCircle,
                         color: AppColors.primary,
                         size: 20,
                       )
