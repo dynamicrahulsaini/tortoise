@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:tortoise_assignment/core/models/tax_slab.dart';
 import 'delivery_info.dart';
 import 'product_config.dart';
 import 'specification.dart';
 import 'product_pricing.dart';
+import 'product_tax_info.dart';
 
-// TODO: can remove isProtected field 
+// TODO: can remove isProtected field
 class Product extends Equatable {
   final String id;
   final String name;
@@ -16,6 +18,7 @@ class Product extends Equatable {
   final List<Specification> specifications;
   final List<String> descriptionImageUrls;
   final ProductPricing pricing;
+  final List<ProductTaxInfo> taxSlabInfo;
   final String? selectedColorId;
   final String? selectedStorageId;
   final bool isProtected;
@@ -31,6 +34,7 @@ class Product extends Equatable {
     required this.specifications,
     required this.descriptionImageUrls,
     required this.pricing,
+    required this.taxSlabInfo,
     this.selectedColorId,
     this.selectedStorageId,
     this.isProtected = true,
@@ -48,6 +52,7 @@ class Product extends Equatable {
         specifications,
         descriptionImageUrls,
         pricing,
+        taxSlabInfo,
         selectedColorId,
         selectedStorageId,
         isProtected,
@@ -66,6 +71,8 @@ class Product extends Equatable {
           (json['specifications'] as List).map((e) => Specification.fromJson(e as Map<String, dynamic>)).toList(),
       descriptionImageUrls: (json['descriptionImageUrls'] as List).cast<String>(),
       pricing: ProductPricing.fromJson(json['pricing'] as Map<String, dynamic>),
+      taxSlabInfo:
+          (json['taxSlabInfo'] as List).map((e) => ProductTaxInfo.fromJson(e as Map<String, dynamic>)).toList(),
       selectedColorId: json['selectedColorId'] as String?,
       selectedStorageId: json['selectedStorageId'] as String?,
       isProtected: json['isProtected'] as bool? ?? true,
@@ -84,6 +91,7 @@ class Product extends Equatable {
       'specifications': specifications.map((e) => e.toJson()).toList(),
       'descriptionImageUrls': descriptionImageUrls,
       'pricing': pricing.toJson(),
+      'taxSlabInfo': taxSlabInfo.map((e) => e.toJson()).toList(),
       'selectedColorId': selectedColorId,
       'selectedStorageId': selectedStorageId,
       'isProtected': isProtected,
@@ -101,6 +109,7 @@ class Product extends Equatable {
     List<Specification>? specifications,
     List<String>? descriptionImageUrls,
     ProductPricing? pricing,
+    List<ProductTaxInfo>? taxSlabInfo,
     String? selectedColorId,
     String? selectedStorageId,
     bool? isProtected,
@@ -116,6 +125,7 @@ class Product extends Equatable {
       specifications: specifications ?? this.specifications,
       descriptionImageUrls: descriptionImageUrls ?? this.descriptionImageUrls,
       pricing: pricing ?? this.pricing,
+      taxSlabInfo: taxSlabInfo ?? this.taxSlabInfo,
       selectedColorId: selectedColorId ?? this.selectedColorId,
       selectedStorageId: selectedStorageId ?? this.selectedStorageId,
       isProtected: isProtected ?? this.isProtected,
@@ -139,5 +149,18 @@ class Product extends Equatable {
       return null;
     }
   }
-}
 
+  /// Get tax information for a specific tax slab
+  ProductTaxInfo? getTaxInfoForSlab(TaxSlab taxSlab) {
+    try {
+      return taxSlabInfo.firstWhere((info) => info.taxSlab.id == taxSlab.id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get all available tax slabs from the product's tax info
+  List<TaxSlab> get availableTaxSlabs {
+    return taxSlabInfo.map((info) => info.taxSlab).toList();
+  }
+}

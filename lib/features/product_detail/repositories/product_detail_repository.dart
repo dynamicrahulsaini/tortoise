@@ -5,9 +5,10 @@ import '../../../core/models/product_config.dart';
 import '../../../core/models/specification.dart';
 import '../../../core/models/product_pricing.dart';
 import '../../../core/models/tax_slab.dart';
+import '../../../core/models/product_tax_info.dart';
 
 class ProductDetailRepository {
-  static final Map<String, Product> _mockProducts = _generateMockProducts();
+  static final Map<String, Product> _mockProducts = generateMockProducts();
 
   Future<Product> getProductById(String productId) async {
     // Simulate API delay
@@ -50,6 +51,7 @@ class ProductDetailRepository {
       selectedColorId: selectedColorId ?? product.selectedColorId,
       selectedStorageId: selectedStorageId ?? product.selectedStorageId,
       pricing: newPricing,
+      taxSlabInfo: product.taxSlabInfo, // Preserve tax slab info
     );
 
     // Update the mock data
@@ -58,7 +60,7 @@ class ProductDetailRepository {
     return updatedProduct;
   }
 
-  static Map<String, Product> _generateMockProducts() {
+  static Map<String, Product> generateMockProducts() {
     final products = <String, Product>{};
 
     // iPhone 16 Pro
@@ -69,8 +71,7 @@ class ProductDetailRepository {
       category: 'Smartphone',
       imageUrls: const [
         'https://www.figma.com/file/lOmYlCgWmvXpYhCtoWlWGh/image/b7ddebecd3e65907db54f14b5393b27d2595cd42',
-        'https://via.placeholder.com/300x300/4A90E2/FFFFFF?text=iPhone+16+Pro+Blue',
-        'https://via.placeholder.com/300x300/F2F2F7/000000?text=iPhone+16+Pro+White',
+        'https://www.figma.com/file/lOmYlCgWmvXpYhCtoWlWGh/image/b7ddebecd3e65907db54f14b5393b27d2595cd42',
       ],
       deliveryInfo: const DeliveryInfo(
         message: 'Shipping starts from 19th September onwards',
@@ -153,6 +154,29 @@ class ProductDetailRepository {
         monthlyDeduction: 8900,
         currentTaxSlab: TaxSlab.availableTaxSlabs[2], // 30%
       ),
+      taxSlabInfo: [
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[0], // 10%
+          effectivePrice: 152859,
+          monthlyDeduction: 5120,
+          taxAmount: 13896,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[1], // 20%
+          effectivePrice: 122770,
+          monthlyDeduction: 6400,
+          taxAmount: 27793,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[2], // 30%
+          effectivePrice: 92483,
+          monthlyDeduction: 8900,
+          taxAmount: 41689,
+          corporateDiscount: 2000,
+        ),
+      ],
       selectedColorId: 'space-black',
       selectedStorageId: '128gb',
     );
@@ -164,8 +188,8 @@ class ProductDetailRepository {
       brand: 'Apple',
       category: 'Smartphone',
       imageUrls: const [
-        'https://via.placeholder.com/300x300/000000/FFFFFF?text=iPhone+16+Pro+Max',
-        'https://via.placeholder.com/300x300/4A90E2/FFFFFF?text=iPhone+16+Pro+Max+Blue',
+        'https://www.figma.com/file/lOmYlCgWmvXpYhCtoWlWGh/image/b7ddebecd3e65907db54f14b5393b27d2595cd42',
+        'https://www.figma.com/file/lOmYlCgWmvXpYhCtoWlWGh/image/b7ddebecd3e65907db54f14b5393b27d2595cd42',
       ],
       deliveryInfo: const DeliveryInfo(
         message: 'Shipping starts from 19th September onwards',
@@ -216,7 +240,11 @@ class ProductDetailRepository {
         ),
       ],
       descriptionImageUrls: const [
-        'https://via.placeholder.com/400x600/000000/FFFFFF?text=Pro+Max+Features',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_01._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_02._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_03._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_04._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_05._CB547243914_.jpg',
       ],
       pricing: ProductPricing(
         devicePrice: 159963,
@@ -224,6 +252,29 @@ class ProductDetailRepository {
         monthlyDeduction: 10900,
         currentTaxSlab: TaxSlab.availableTaxSlabs[2], // 30%
       ),
+      taxSlabInfo: [
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[0], // 10%
+          effectivePrice: 175959,
+          monthlyDeduction: 5120,
+          taxAmount: 15996,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[1], // 20%
+          effectivePrice: 141170,
+          monthlyDeduction: 6400,
+          taxAmount: 31993,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[2], // 30%
+          effectivePrice: 106483,
+          monthlyDeduction: 10900,
+          taxAmount: 47989,
+          corporateDiscount: 2000,
+        ),
+      ],
       selectedColorId: 'space-black',
       selectedStorageId: '256gb',
     );
@@ -235,7 +286,8 @@ class ProductDetailRepository {
       brand: 'Apple',
       category: 'Laptop',
       imageUrls: const [
-        'https://via.placeholder.com/300x300/000000/FFFFFF?text=MacBook+Pro',
+        'https://m.media-amazon.com/images/I/71pKJ+Mjd8L._SX679_.jpg',
+        'https://m.media-amazon.com/images/I/61wJeelYVaL._SX679_.jpg',
       ],
       deliveryInfo: const DeliveryInfo(
         message: 'Shipping will begin in 3-4 weeks',
@@ -285,7 +337,9 @@ class ProductDetailRepository {
         ),
       ],
       descriptionImageUrls: const [
-        'https://via.placeholder.com/400x600/000000/FFFFFF?text=MacBook+Features',
+        'https://m.media-amazon.com/images/I/71Ms3-J8bXL._SX679_.jpg',
+        'https://m.media-amazon.com/images/I/61dHNAMoiFL._SX679_.jpg',
+        'https://m.media-amazon.com/images/I/61ovNoIFFsL._SX679_.jpg',
       ],
       pricing: ProductPricing(
         devicePrice: 249963,
@@ -293,6 +347,29 @@ class ProductDetailRepository {
         monthlyDeduction: 16900,
         currentTaxSlab: TaxSlab.availableTaxSlabs[2], // 30%
       ),
+      taxSlabInfo: [
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[0], // 10%
+          effectivePrice: 274959,
+          monthlyDeduction: 5120,
+          taxAmount: 24996,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[1], // 20%
+          effectivePrice: 221170,
+          monthlyDeduction: 6400,
+          taxAmount: 49993,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[2], // 30%
+          effectivePrice: 166483,
+          monthlyDeduction: 16900,
+          taxAmount: 74989,
+          corporateDiscount: 2000,
+        ),
+      ],
       selectedColorId: 'space-gray',
       selectedStorageId: '1tb',
     );
@@ -304,7 +381,8 @@ class ProductDetailRepository {
       brand: 'Google',
       category: 'Smartphone',
       imageUrls: const [
-        'https://via.placeholder.com/300x300/4285F4/FFFFFF?text=Pixel+8+Pro',
+        'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSBkGTDehNnqnUCLNl_6sqEImwi7Rz-h0HLWVlWle3RB9oba8E',
+        'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSBkGTDehNnqnUCLNl_6sqEImwi7Rz-h0HLWVlWle3RB9oba8E',
       ],
       deliveryInfo: const DeliveryInfo(
         message: 'Shipping starts from 15th October onwards',
@@ -312,9 +390,9 @@ class ProductDetailRepository {
       ),
       config: const ProductConfig(
         colors: [
+          ColorOption(id: 'bay', name: 'Bay', hexColor: '#4285F4'),
           ColorOption(id: 'obsidian', name: 'Obsidian', hexColor: '#000000'),
           ColorOption(id: 'porcelain', name: 'Porcelain', hexColor: '#FFFFFF'),
-          ColorOption(id: 'bay', name: 'Bay', hexColor: '#4285F4'),
         ],
         storageOptions: [
           StorageOption(id: '128gb', capacity: '128 GB'),
@@ -355,7 +433,11 @@ class ProductDetailRepository {
         ),
       ],
       descriptionImageUrls: const [
-        'https://via.placeholder.com/400x600/4285F4/FFFFFF?text=Google+Features',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_01._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_02._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_03._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_04._CB547243914_.jpg',
+        'https://m.media-amazon.com/images/G/31/img25/Wireless/Madhav/Feb/Apple/River/16/iPhone_16_Marketing_Page_Flex_Module_Avail_Amazon_Desktop_1500px__en-IN_05._CB547243914_.jpg',
       ],
       pricing: ProductPricing(
         devicePrice: 106999,
@@ -363,6 +445,29 @@ class ProductDetailRepository {
         monthlyDeduction: 7200,
         currentTaxSlab: TaxSlab.availableTaxSlabs[2], // 30%
       ),
+      taxSlabInfo: [
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[0], // 10%
+          effectivePrice: 117699,
+          monthlyDeduction: 5120,
+          taxAmount: 10700,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[1], // 20%
+          effectivePrice: 94199,
+          monthlyDeduction: 6400,
+          taxAmount: 21400,
+          corporateDiscount: 2000,
+        ),
+        ProductTaxInfo(
+          taxSlab: TaxSlab.availableTaxSlabs[2], // 30%
+          effectivePrice: 71299,
+          monthlyDeduction: 7200,
+          taxAmount: 32100,
+          corporateDiscount: 2000,
+        ),
+      ],
       selectedColorId: 'obsidian',
       selectedStorageId: '256gb',
     );

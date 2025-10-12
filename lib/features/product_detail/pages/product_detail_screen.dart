@@ -153,10 +153,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         Expanded(
           child: SingleChildScrollView(
             child: Column(
+              spacing: 30,
               children: [
-                _buildShippingInfo(product.deliveryInfo),
-                _buildImageCarousel(product.imageUrls),
-                _buildProtectedStrip(),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildShippingInfo(product.deliveryInfo),
+                    _buildImageCarousel(product.imageUrls),
+                    _buildProtectedStrip(),
+                  ],
+                ),
                 ConfigSelector(
                   config: product.config,
                   selectedColorId: product.selectedColorId,
@@ -168,27 +174,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     context.read<ProductDetailBloc>().add(SelectStorage(storageId));
                   },
                 ),
-                // const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SpecificationsSection(
-                    specifications: product.specifications,
-                    isExpanded: state.isSpecificationsExpanded,
-                    onToggleExpanded: () {
-                      context.read<ProductDetailBloc>().add(const ToggleSpecificationsExpanded());
-                    },
-                  ),
+                SpecificationsSection(
+                  specifications: product.specifications,
+                  isExpanded: state.isSpecificationsExpanded,
+                  onToggleExpanded: () {
+                    context.read<ProductDetailBloc>().add(const ToggleSpecificationsExpanded());
+                  },
                 ),
-                // const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: DescriptionImagesSection(
-                    imageUrls: product.descriptionImageUrls,
-                    isExpanded: state.isDescriptionImagesExpanded,
-                    onToggleExpanded: () {
-                      context.read<ProductDetailBloc>().add(const ToggleDescriptionImagesExpanded());
-                    },
-                  ),
+                DescriptionImagesSection(
+                  imageUrls: product.descriptionImageUrls,
+                  isExpanded: state.isDescriptionImagesExpanded,
+                  onToggleExpanded: () {
+                    context.read<ProductDetailBloc>().add(const ToggleDescriptionImagesExpanded());
+                  },
                 ),
                 const SizedBox(height: 100), // Space for bottom bar
               ],
@@ -196,7 +194,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
         ),
         PriceBottomBar(
-          pricing: product.pricing,
+          product: product,
           onAddToCart: () {
             _showAddToCartDialog(product);
           },

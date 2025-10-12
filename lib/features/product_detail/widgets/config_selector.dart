@@ -24,7 +24,7 @@ class ConfigSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Column(
         spacing: 36,
         crossAxisAlignment: CrossAxisAlignment.start,

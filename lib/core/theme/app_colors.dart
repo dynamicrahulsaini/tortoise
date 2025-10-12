@@ -31,7 +31,11 @@ class AppColors {
   static const Color subText = Color(0x40191919); //  black 10 with 45% opacity
   static const Color contentLight = Color(0xFFAFAFAF);
 
-  static const List<Color> borderGradient = [Colors.white, Color(0xFF42D499), Colors.white];
+  static const List<Color> borderGradient = [
+    Color.fromARGB(255, 207, 244, 229),
+    Color(0xFF42D499),
+    Color.fromARGB(255, 207, 244, 229),
+  ];
 
   // Secondary colors
   static const Color secondary = Color(0xFF26A69A);
