@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Marketplace App',
         navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(

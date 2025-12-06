@@ -1,29 +1,37 @@
 import 'dart:async';
-import 'package:tortoise_assignment/features/product_detail/repositories/product_detail_repository.dart';
+import 'package:tortoise_assignment/core/models/available_brand.dart';
+import 'package:tortoise_assignment/core/models/catalog_product_info.dart';
 
 import '../../../core/models/product.dart';
+import '../services/product_catalog_service.dart';
 
 class ProductCatalogRepository {
-  static final List<Product> _mockProducts = _generateMockProducts();
+  final ProductCatalogService _service;
 
+  ProductCatalogRepository({ProductCatalogService? service}) : _service = service ?? ProductCatalogService();
+
+  /// Get all available brands
+  Future<List<AvailableBrand>> getAvailableBrands() async {
+    return await _service.getAvailableBrands();
+  }
+
+  /// Get all available product categories
+  Future<List<String>> getProductCategories() async {
+    return await _service.getProductCategories();
+  }
+
+  /// Get products filtered by brand
   Future<List<Product>> getProductsByBrand(String brand) async {
-    // Simulate API delay
-    await Future.delayed(const Duration(seconds: 1));
-
-    if (brand.toLowerCase() == 'all') {
-      return List.from(_mockProducts);
-    }
-
-    return _mockProducts.where((product) => product.brand.toLowerCase() == brand.toLowerCase()).toList();
+    return await _service.getProductsByBrand(brand);
   }
 
-  Future<List<Product>> getAllProducts() async {
-    // Simulate API delay
-    await Future.delayed(const Duration(seconds: 1));
-    return List.from(_mockProducts);
+  /// Get all products
+  Future<List<CatalogProductInfo>> getAllProducts() async {
+    return await _service.getAllProducts();
   }
 
-  static List<Product> _generateMockProducts() {
-    return ProductDetailRepository.generateMockProducts().values.toList();
+  /// Get a specific product by ID
+  Future<Product> getProductById(String productId) async {
+    return await _service.getProductById(productId);
   }
 }

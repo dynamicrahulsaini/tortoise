@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tortoise_assignment/core/models/catalog_product_info.dart';
 import '../../../core/models/product.dart';
 
 abstract class ProductCatalogState extends Equatable {
@@ -17,7 +18,7 @@ class ProductCatalogLoading extends ProductCatalogState {
 }
 
 class ProductCatalogLoaded extends ProductCatalogState {
-  final List<Product> products;
+  final List<CatalogProductInfo> products;
   final String? selectedBrand;
   final String searchQuery;
 
@@ -31,7 +32,7 @@ class ProductCatalogLoaded extends ProductCatalogState {
   List<Object?> get props => [products, selectedBrand, searchQuery];
 
   ProductCatalogLoaded copyWith({
-    List<Product>? products,
+    List<CatalogProductInfo>? products,
     String? selectedBrand,
     String? searchQuery,
   }) {

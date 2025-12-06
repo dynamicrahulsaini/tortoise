@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tortoise_assignment/core/models/catalog_product_info.dart';
 import '../../../core/models/product.dart';
 import '../../../core/theme/app_colors.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
+  final CatalogProductInfo product;
   final VoidCallback onTap;
 
   const ProductCard({
@@ -52,7 +53,7 @@ class ProductCard extends StatelessWidget {
           children: [
             Image.network(
               height: 48,
-              product.imageUrls.first,
+              product.imageUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(

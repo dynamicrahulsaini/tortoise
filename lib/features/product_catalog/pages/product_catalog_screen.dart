@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:tortoise_assignment/core/models/catalog_product_info.dart';
 import 'package:tortoise_assignment/core/theme/text_style.dart';
 import '../../../core/theme/app_colors.dart';
 import '../bloc/product_catalog_bloc.dart';
@@ -19,8 +20,7 @@ class ProductCatalogScreen extends StatefulWidget {
 
 class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final List<String> _availableBrands = ['Apple', 'Google', 'Samsung', 'OnePlus'];
-  String? _selectedBrand;
+  int? _selectedBrandId;
 
   @override
   void dispose() {
@@ -30,108 +30,112 @@ class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        toolbarHeight: 72,
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        leading: IconButton(
-          icon: const PhosphorIcon(PhosphorIconsFill.caretCircleLeft, color: AppColors.black3),
-          onPressed: () {
-            // Non-functional back button as per requirements
-          },
-        ),
-        title: SizedBox(
-          height: 60,
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.black10.withAlpha(13),
-              hintText: 'Search products...',
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              prefixIcon: Row(
-                spacing: 12,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: PhosphorIcon(
-                      PhosphorIconsRegular.magnifyingGlass,
-                      color: AppColors.black10,
-                      size: 20,
-                    ),
-                  ),
-                  if (_selectedBrand != null)
-                    Container(
-                      height: 36,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        spacing: 10,
-                        children: [
-                          Text(
-                            _selectedBrand!,
-                            style: const TextStyle(
-                              color: AppColors.black10,
-                              fontSize: 16,
-                              height: 20 / 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedBrand = null;
-                                _searchController.clear();
-                              });
-                              context.read<ProductCatalogBloc>().add(const FilterByBrand('All'));
-                            },
-                            child: const PhosphorIcon(
-                              PhosphorIconsFill.xCircle,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    return BlocConsumer<ProductCatalogBloc, ProductCatalogState>(
+      listener: (context, state) {
+        if (state is ProductCatalogError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.error,
             ),
-            onChanged: (value) {
-              context.read<ProductCatalogBloc>().add(SearchProducts(value));
-            },
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: BlocConsumer<ProductCatalogBloc, ProductCatalogState>(
-        listener: (context, state) {
-          if (state is ProductCatalogError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBar(
+            toolbarHeight: 72,
+            backgroundColor: AppColors.background,
+            elevation: 0,
+            leading: IconButton(
+              icon: const PhosphorIcon(PhosphorIconsFill.caretCircleLeft, color: AppColors.black3),
+              onPressed: () {
+                // Non-functional back button as per requirements
+              },
+            ),
+            title: SizedBox(
+              height: 60,
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: AppColors.black10.withAlpha(13),
+                  hintText: 'Search products...',
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  prefixIcon: Row(
+                    spacing: 12,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: PhosphorIcon(
+                          PhosphorIconsRegular.magnifyingGlass,
+                          color: AppColors.black10,
+                          size: 20,
+                        ),
+                      ),
+                      if (_selectedBrandId != null)
+                        Container(
+                          height: 36,
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            spacing: 10,
+                            children: [
+                              Text(
+                                context
+                                    .read<ProductCatalogBloc>()
+                                    .availableBrands
+                                    .firstWhere((brand) => brand.id == _selectedBrandId)
+                                    .name,
+                                style: const TextStyle(
+                                  color: AppColors.black10,
+                                  fontSize: 16,
+                                  height: 20 / 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedBrandId = null;
+                                    _searchController.clear();
+                                  });
+                                  context.read<ProductCatalogBloc>().add(const FilterByBrand('All'));
+                                },
+                                child: const PhosphorIcon(
+                                  PhosphorIconsFill.xCircle,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+                onChanged: (value) {
+                  context.read<ProductCatalogBloc>().add(SearchProducts(value));
+                },
               ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Container(
+            ),
+            centerTitle: true,
+          ),
+          body: Container(
             padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
             child: Column(
               spacing: 30,
@@ -142,9 +146,9 @@ class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -200,6 +204,7 @@ class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
   }
 
   Widget _buildBrandFilters(ProductCatalogState state) {
+    final bloc = context.read<ProductCatalogBloc>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -217,20 +222,20 @@ class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
           height: 76,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: _availableBrands.length,
+            itemCount: bloc.availableBrands.length,
             itemBuilder: (context, index) {
-              final brand = _availableBrands[index];
+              final brand = bloc.availableBrands[index];
               return Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: BrandFilterChip(
-                  brand: brand,
-                  isSelected: _selectedBrand == brand,
+                  brand: brand.name,
+                  isSelected: _selectedBrandId == brand.id,
                   onTap: () {
                     if (state is ProductCatalogLoading) return;
                     setState(() {
-                      _selectedBrand = brand;
+                      _selectedBrandId = brand.id;
                     });
-                    context.read<ProductCatalogBloc>().add(FilterByBrand(brand));
+                    context.read<ProductCatalogBloc>().add(FilterByBrand(brand.name));
                   },
                 ),
               );
@@ -242,7 +247,7 @@ class _ProductCatalogScreenState extends State<ProductCatalogScreen> {
     );
   }
 
-  Widget _buildProductsGrid(List<dynamic> products) {
+  Widget _buildProductsGrid(List<CatalogProductInfo> products) {
     if (products.isEmpty) {
       return const Center(
         child: Column(
